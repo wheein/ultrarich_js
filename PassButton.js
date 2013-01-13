@@ -10,9 +10,13 @@ var PassButton = Class.create(Sprite, {
 		this.y = 500;
 		this.image = game.assets['img/pass_button.png'];
 		this.addEventListener(Event.TOUCH_START, function() {
+			this.image = game.assets['img/pass_button_down.png'];
 			if(game.current == 0) {
 				game.players[0].passButtonHasPushed();
 			}
+		});
+		this.addEventListener(Event.TOUCH_END, function() {
+			this.image = game.assets['img/pass_button.png'];
 		});
 	}
 });

@@ -10,9 +10,13 @@ var PlayButton = Class.create(Sprite, {
 		this.y = 330;
 		this.image = game.assets['img/play_button.png'];
 		this.addEventListener(Event.TOUCH_START, function() {
+			this.image = game.assets['img/play_button_down.png'];
 			if(game.current == 0) {
 				game.players[0].playButtonHasPushed();
 			}
+		});
+		this.addEventListener(Event.TOUCH_END, function() {
+			this.image = game.assets['img/play_button.png']
 		});
 	}
 });
