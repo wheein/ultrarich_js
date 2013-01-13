@@ -114,6 +114,10 @@ var Game = Class.create(Core, {
 			this.rootScene.addChild(infoboards);
 			this.infoboards = infoboards;
 			
+			// Create marker
+			this.marker = new Marker();
+			this.rootScene.addChild(this.marker);
+			
 			// start game
 			this.startGame();
 		};
@@ -138,6 +142,7 @@ var Game = Class.create(Core, {
 		this.preload('img/commoner.png');
 		this.preload('img/poor.png');
 		this.preload('img/ultrapoor.png');
+		this.preload('img/marker.png');
 	},
 	
 	/**
