@@ -54,6 +54,13 @@ var Game = Class.create(Core, {
 	fieldOwner: null,
 	
 	/**
+	 * Infomation board group.
+	 * @memberOf Game
+	 * @property {Group} Infoboards
+	 */
+	 infoboards: null,
+	
+	/**
 	 * Constructor of Game class.
 	 * @memberOf Game
 	 * @function
@@ -77,7 +84,7 @@ var Game = Class.create(Core, {
 			// Create field
 			this.field = new Field();
 			this.rootScene.addChild(this.field);
-		
+						
 			// load cards
 			var loadCardset = function() {
 				var result = [];
@@ -96,6 +103,12 @@ var Game = Class.create(Core, {
 			this.players.push(new AI(2));
 			this.players.push(new AI(3));
 			this.rootScene.addChild(player.hand);
+			
+			// Create infoboards
+			this.infoboards = new Group();
+			for(var i = 0; i < this.players.length; i++) {
+				this.infoboards.addChild(new Infoboard(i));
+			}
 			
 			// start game
 			this.startGame();
@@ -288,3 +301,14 @@ var Game = Class.create(Core, {
 		}
 	}
 });
+
+/**
+ * Const of ranking
+ * @static
+ * @memberOf Game
+ */
+Game.ULTRARICH = 5;
+Game.RICH = 4;
+Game.COMMONER = 3;
+Game.POOR = 2;
+Game.ULTRAPOOR = 1;

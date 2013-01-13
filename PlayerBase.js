@@ -17,6 +17,14 @@ var PlayerBase = Class.create({
 	info: Group,
 	
 	/**
+	 * Player rank
+	 * @property {Const} rank Player rank.
+	 * @memberOf PlayerBase
+	 * @see Game
+	 */
+	 rank: null,
+	
+	/**
 	 * Update information board.
 	 * @memberOf PlayerBase
 	 * @function
@@ -32,6 +40,7 @@ var PlayerBase = Class.create({
 	 */
 	initialize: function(id) {
 		this.hand = new Group();
+		this.rank = Game.COMMONER;
 		
 		var info = new Label();
 		info.x = 10;
