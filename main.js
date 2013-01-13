@@ -4,7 +4,7 @@
  */
 enchant();
 
-var game; // game is a global object.
+var game; // game is a only global object.
 
 window.onload = function() {
 	game = new Game(960, 640);

@@ -1,15 +1,15 @@
 /**
  * Infomation board class
  * @class
- * @extends Sprite
+ * @extends Group
  */
-var Infoboard = Class.create(Sprite, {
+var Infoboard = Class.create(Group, {
 	/**
-	 * Player name
+	 * Player
 	 * @memberOf Infoboard
-	 * @property {String} name Player name
+	 * @property {String} player Player
 	 */
-	name: '',
+	player: null,
 	
 	/**
 	 * Player rank
@@ -27,16 +27,62 @@ var Infoboard = Class.create(Sprite, {
 	handNum: 0,
 	
 	/**
-	 * Infoboard id of player
-	 * @memberOf Infoboard
-	 * @property {Number} id Infoboard id of player.
+	 * Background sprite
+	 * @memberOf background
+	 * @property {Sprite} background Background sprite
 	 */
-	id: null,
+	background: null,
+	
+	/**
+	 * Update information
+	 * @memberOf Infoboard
+	 * @function
+	 */
+	update: function() {
+		this.handNum.text = '手札：' + this.player.hand.childNodes.length;
+	},
+	
+	/**
+	 * Player name label
+	 * @memberOf Infoboard
+	 * @property {Label} name Player name label
+	 */
+	name: null,
+	
+	/**
+	 * Hand num label
+	 * @memberOf Infoboard
+	 * @property {Label} handNum Hand num label
+	 */
+	handNum: null,
 	
 	// constructor
-	initialize: function(id) {
-		Sprite.call(this);
-		this.id = id;
-		this.rank = game.players[id].rank;
+	initialize: function(player) {
+		Group.call(this);
+		this.player = player;
+		this.rank = player.rank;
+		this.x = 0;
+		this.y = player.id * 81;
+		
+		// background
+		this.background = new Sprite(186, 81);
+		this.background.image = game.assets['img/commoner.png'];
+		this.addChild(this.background);
+		
+		// player name
+		this.name = new Label();
+		this.name.x = 20;
+		this.name.y = 20;
+		this.name.font = '20px sans-serif';
+		this.name.color = 'black';
+		this.name.text = this.player.name;
+		this.addChild(this.name);
+		
+		// hand num
+		this.handNum = new Label();
+		this.handNum.x = 110;
+		this.handNum.y = 50;
+		this.handNum.text = '手札：' + this.player.hand.childNodes.length;
+		this.addChild(this.handNum);
 	}
 });

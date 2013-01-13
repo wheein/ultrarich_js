@@ -10,7 +10,7 @@ var AI = Class.create(PlayerBase, {
 	 * @function
 	 */
 	startTurn: function() {
-		this.updateInfo();
+//		this.updateInfo();
 		var field = game.field.childNodes;
 		var hand = this.hand.childNodes;
 		var strategy = this.plan(field, hand);
@@ -19,14 +19,6 @@ var AI = Class.create(PlayerBase, {
 			strategy.call(that);
 			that.endTurn();
 		}, 250);
-	/*
-		this.updateInfo();
-		console.log('AI starts tern.');
-		var that = this;
-		setTimeout(function() {
-			that.act();
-		}, 250);
-	*/
 	},
 	
 	/**
@@ -36,7 +28,7 @@ var AI = Class.create(PlayerBase, {
 	 */
 	endTurn: function() {
 		// End turn or Finish game
-		this.updateInfo();
+//		this.updateInfo();
 		if(this.hand.childNodes.length > 0) {
 			game.playerHasEndedTurn();
 			console.log('AI has ended turn.');
@@ -197,7 +189,7 @@ var AI = Class.create(PlayerBase, {
 		for(var i = 0; i < cards.length; i++) {
 			this.hand.addChild(cards[i]);
 		}
-		this.updateInfo();
+//		this.updateInfo();
 	}
 });
 

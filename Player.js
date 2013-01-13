@@ -10,7 +10,7 @@ var Player = Class.create(PlayerBase, {
 	 * @function
 	 */
 	startTurn: function() {
-		this.updateInfo();
+//		this.updateInfo();
 		console.log('Player start turn.');
 		// Add select events for hand
 		for(i = 0; i < this.hand.childNodes.length; i++) {
@@ -108,7 +108,7 @@ var Player = Class.create(PlayerBase, {
 	 * @function
 	 */
 	endTurn: function() {
-		this.updateInfo();
+//		this.updateInfo();
 		
 		for(var i = 0; i < this.hand.childNodes.length; i++) {
 			this.hand.childNodes[i].clearEventListener(Event.TOUCHw_START);
@@ -146,7 +146,7 @@ var Player = Class.create(PlayerBase, {
 			cards[i].visible = true;
 			this.hand.addChild(cards[i]);
 		}
-		this.updateInfo();
+//		this.updateInfo();
 	}
 });
 

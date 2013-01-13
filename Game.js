@@ -97,18 +97,22 @@ var Game = Class.create(Core, {
 			this.cardset = loadCardset();
 			
 			// create players
-			var player = new Player(0);
+			var player = new Player(0, 'あなた');
 			this.players.push(player);
-			this.players.push(new AI(1));
-			this.players.push(new AI(2));
-			this.players.push(new AI(3));
+			this.players.push(new AI(1, 'AI_1'));
+			this.players.push(new AI(2, 'AI_2'));
+			this.players.push(new AI(3, 'AI_3'));
 			this.rootScene.addChild(player.hand);
 			
 			// Create infoboards
-			this.infoboards = new Group();
+			var infoboards = new Group();
+			infoboards.x = 0;
+			infoboards.y = 0;
 			for(var i = 0; i < this.players.length; i++) {
-				this.infoboards.addChild(new Infoboard(i));
+				infoboards.addChild(new Infoboard(this.players[i]));
 			}
+			this.rootScene.addChild(infoboards);
+			this.infoboards = infoboards;
 			
 			// start game
 			this.startGame();
@@ -125,10 +129,13 @@ var Game = Class.create(Core, {
 			this.preload('img/' + cards[i]);
 		}
 		this.preload('img/play_button.png');
+		this.preload('img/play_button_down.png');
 		this.preload('img/pass_button.png');
+		this.preload('img/pass_button_down.png');
 		this.preload('img/background.jpg');
 		this.preload('img/ultrarich.png');
 		this.preload('img/rich.png');
+		this.preload('img/commoner.png');
 		this.preload('img/poor.png');
 		this.preload('img/ultrapoor.png');
 	},
@@ -147,6 +154,10 @@ var Game = Class.create(Core, {
 		this.cardset = this.shuffle(this.cardset);
 		this.deal(this.cardset);
 		
+		for(var i = 0; i < this.infoboards.childNodes.length; i++) {
+			this.infoboards.childNodes[i].update();
+		}
+		
 		// Exchange players hand after 2nd game.
 		if(this.gameCount > 1) {
 			for(var i = 0; i < this.players.length; i++) {
@@ -164,7 +175,7 @@ var Game = Class.create(Core, {
 	 * @memberOf Game
 	 * @function
 	 */
-	playerHasEndedTurn: function() {
+	playerHasEndedTurn: function() {		
 		// Next player
 		this.current = this.next();
 		
@@ -195,6 +206,7 @@ var Game = Class.create(Core, {
 	 */
 	playerHasPlayed: function(cards) {
 		this.clearField();
+		this.infoboards.childNodes[this.current].update();
 		
 		// Move cards to field from hand.
 		for(var i = 0; i < cards.length; i++) {
