@@ -17,7 +17,7 @@ var AI = Class.create(PlayerBase, {
 		setTimeout(function() {
 			strategy.call(that);
 			that.endTurn();
-		}, 250);
+		}, 1000);
 	},
 	
 	/**

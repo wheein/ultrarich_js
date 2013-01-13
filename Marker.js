@@ -15,8 +15,18 @@ var Marker = Class.create(Sprite, {
 		
 		// Set animation
 		this.tl
-			.moveBy(30, 0, 20, enchant.Easing.SIN_EASEOUT)
-			.moveBy(-30, 0, 20, enchant.Easing.SIN_EASEIN)
+			.moveBy(20, 0, 20, enchant.Easing.SIN_EASEOUT)
+			.moveBy(-20, 0, 20, enchant.Easing.SIN_EASEIN)
 			.loop();
+	},
+	
+	/**
+	 * Move marker to any player's info.
+	 * @memberOf Marker
+	 * @function
+	 * @param {Number} goal Goal of moving. 0 - 4.
+	 */
+	moveTo: function(goal) {
+		this.y = 15 + goal * 81;
 	}
 });

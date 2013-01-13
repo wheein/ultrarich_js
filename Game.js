@@ -172,6 +172,7 @@ var Game = Class.create(Core, {
 		
 		ranking = [];
 		this.current = 0;
+		this.marker.moveTo(0);
 		this.players[0].startTurn();
 	},
 	
@@ -183,6 +184,7 @@ var Game = Class.create(Core, {
 	playerHasEndedTurn: function() {		
 		// Next player
 		this.current = this.next();
+		this.marker.moveTo(this.current);
 		
 		// Clear field
 		if(this.current == this.fieldOwner) {
@@ -240,6 +242,7 @@ var Game = Class.create(Core, {
 		} else {
 			this.current = this.next(); 
 			console.log('Next player is ' + this.current);
+			this.marker.moveTo(this.current);
 			this.players[this.current].startTurn();
 		}
 	},
