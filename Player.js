@@ -47,7 +47,7 @@ var Player = Class.create(PlayerBase, {
 	 		return false;
 	 	}
 	 	
-	 	// Remove selected cards
+	 	// Play animation
 		var that = this;
 		var endAnimationCount = 0;
 	 	for(var i = 0; i < selectedCards.length; i++) {

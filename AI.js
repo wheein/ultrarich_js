@@ -16,8 +16,7 @@ var AI = Class.create(PlayerBase, {
 		var that = this;
 		setTimeout(function() {
 			strategy.call(that);
-			that.endTurn();
-		}, 1000);
+		}, 250);
 	},
 	
 	/**
@@ -130,7 +129,7 @@ var AI = Class.create(PlayerBase, {
 	 * @function
 	 */
 	pass: function() {
-		return true;
+		this.endTurn();
 	},
 	
 	/**
@@ -139,9 +138,14 @@ var AI = Class.create(PlayerBase, {
 	 * @function
 	 */
 	 playAnyCard: function() {
-	 	game.playerHasPlayed([this.hand.firstChild]);
-	 	this.hand.removeChild(this.hand.firstChild);
-	 },
+	 	var card = this.hand.firstChild;
+		var that = this;
+		this.playAnimation([card], function() {
+			that.hand.removeChild(card);
+		 	game.playerHasPlayed([card]);
+			that.endTurn();
+		});
+	},
 	
 	/**
 	 * Play a card to field.
@@ -150,20 +154,50 @@ var AI = Class.create(PlayerBase, {
 	 */
 	playSingleCard: function() {
 		var playable = this.getPlayableCards(game.field.childNodes, this.hand.childNodes);
-		game.playerHasPlayed([playable[0]]);
-		this.hand.removeChild(playable[0]);
+		var that = this;
+		this.playAnimation([playable[0]], function() {
+			var card = playable[0];
+			that.hand.removeChild(card);
+			game.playerHasPlayed([card]);
+			that.endTurn();
+		});
 	},
 	
 	/**
 	 * Play some cards to field.
 	 * @memberOf AI
-	 * @functions
+	 * @function
 	 */
 	playMultiCards: function() {
 		var playable = this.getPlayableCards(game.field.childNodes, this.hand.childNodes);
 		game.playerHasPlayed(playable[0]);
 		for(var i = 0; i < playable[0].length; i++) {
 			this.hand.removeChild(playable[0][i]);
+		}
+		this.endTurn();
+	},
+	
+	/**
+	 * Play an animation of playing cards.
+	 * @memberOf AI
+	 * @function
+	 * @param {Array(Card)} cards Cards to play.
+	 * @param {Function} callback Callback function when animation has finished.
+	 */
+	playAnimation: function(cards, callback) {
+		var endAnimeCount = 0;
+		for(var i = 0; i < cards.length; i++) {
+			game.rootScene.addChild(cards[i]);
+			cards[i].y = 60 * this.id;
+			cards[i].visible = true;
+			cards[i].tl.moveTo(game.field.x, game.field.y, 4).then(function() {
+				game.rootScene.removeChild(this);
+				
+				endAnimeCount++;
+				if(endAnimeCount >= cards.length) {
+					callback();
+				}
+			});
 		}
 	},
 	
