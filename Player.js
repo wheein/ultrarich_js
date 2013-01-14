@@ -48,17 +48,22 @@ var Player = Class.create(PlayerBase, {
 	 	}
 	 	
 	 	// Remove selected cards
-	 	for(var i = this.hand.childNodes.length - 1; 0 <= i; i--) {
-	 		if(this.hand.childNodes[i].selected) {
-	 			this.hand.childNodes[i].visible = false;
-				this.hand.childNodes[i].toggleSelected();
-	 			this.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
-	 			this.hand.removeChild(this.hand.childNodes[i]);
-	 		}
+		var that = this;
+		var endAnimationCount = 0;
+	 	for(var i = 0; i < selectedCards.length; i++) {
+			selectedCards[i].tl.moveTo(400 + i * 110, 100, 3).then(function() {
+				this.visible = false;
+				this.toggleSelected();
+				this.clearEventListener(Event.TOUCH_START);
+				that.hand.removeChild(this);
+
+				endAnimationCount++;
+				if(endAnimationCount == selectedCards.length) {
+					game.playerHasPlayed(selectedCards);
+					that.endTurn();
+				}
+			});
 	 	}
-	 	
-	 	game.playerHasPlayed(selectedCards);
-		this.endTurn();
 	},
 	
 	/**
