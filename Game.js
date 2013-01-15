@@ -164,16 +164,19 @@ var Game = Class.create(Core, {
 		}
 		
 		// Exchange players hand after 2nd game.
+		// debug
+		this.gameCount = 2;
+		this.players[0].rank = Game.ULTRARICH;
 		if(this.gameCount > 1) {
 			for(var i = 0; i < this.players.length; i++) {
 				this.players[i].exchange();
 			}
+		} else {
+			ranking = [];
+			this.current = 0;
+			this.marker.moveTo(0);
+			this.players[0].startTurn();
 		}
-		
-		ranking = [];
-		this.current = 0;
-		this.marker.moveTo(0);
-		this.players[0].startTurn();
 	},
 	
 	/**

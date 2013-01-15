@@ -131,7 +131,28 @@ var Player = Class.create(PlayerBase, {
 	 * @function
 	 */
 	exchange: function() {
-		console.log('Player: Exchange hands');
+		var exchangeCards = [];
+		var exchangeNum;
+		var rank = this.rank;
+		if(rank == Game.ULTRARICH || rank == Game.ULTRAPOOR) {
+			exchangeNum = 2;
+		} else if(rank == Game.RICH || rank == Game.POOR) {
+			exchangeNum = 1;
+		} else {
+			console.log('RANKING ERROR!');
+		}
+		
+		for(var i = 0; i < this.hand.childNodes.length; i++) {
+			this.hand.childNodes[i].addEventListener(Event.TOUCH_START, function() {
+				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5);
+				this.clearEventListener(Event.TOUCH_START);
+				
+				exchangeCards.push(this);
+				if(exchangeCards.length >= exchangeNum) {
+					game.playerHasSelected(exchangeCards);
+				}
+			});
+		}
 	},
 	
 	/**
