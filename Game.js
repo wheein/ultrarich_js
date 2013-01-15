@@ -19,6 +19,13 @@ var Game = Class.create(Core, {
 	ranking: [],
 	
 	/**
+	 * Buffer of cards to exchange.
+	 * @memberOf Game
+	 * @property {Array(Array(Card))} exchangeBuffer
+	 */
+	exchangeBuffer: [],
+	
+	/**
 	 * Cardset that will used on the game.
 	 * @memberOf Game
 	 * @property {Array(Card)} cardset
@@ -164,10 +171,16 @@ var Game = Class.create(Core, {
 		}
 		
 		// Exchange players hand after 2nd game.
-		// debug
+		// debug start //
 		this.gameCount = 2;
 		this.players[0].rank = Game.ULTRARICH;
+		this.players[1].rank = Game.RICH;
+		this.players[2].rank = Game.POOR;
+		this.players[3].rank = Game.ULTRAPOOR;
+		// debug end //
+		
 		if(this.gameCount > 1) {
+			this.exchangeBuffer = [];
 			for(var i = 0; i < this.players.length; i++) {
 				this.players[i].exchange();
 			}
@@ -341,6 +354,22 @@ var Game = Class.create(Core, {
 			console.log('Game has finished');
 			this.stop();
 		}
+	},
+	
+	/**
+	 * This function execute when player has selected to exchange cards.
+	 * @memberOf Game
+	 * @function
+	 * @param {Array(Card)} To exchange card.
+	 * @param {Player} Owner of cards.
+	 */
+	playerHasSelected: function(cards, owner) {
+		this.exchangeBuffer.push({
+			rank :owner.rank,
+			cards: cards
+		});
+		console.log(this.exchangeBuffer);
+		
 	}
 });
 

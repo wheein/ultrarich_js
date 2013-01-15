@@ -208,6 +208,21 @@ var AI = Class.create(PlayerBase, {
 	 */
 	exchange: function() {
 		console.log('AI: Exchange hands');
+		var exchangeCards = [];
+		if(this.rank == Game.ULTRARICH) {
+			exchangeCards.push(this.hand.childNodes[0]);
+			exchangeCards.push(this.hand.childNodes[1]);
+		} else if(this.rank == Game.RICH) {
+			exchangeCards.push(this.hand.firstChild);
+		} else if(this.rank == Game.POOR) {
+			exchangeCards.push(this.hand.lastChild);
+		} else if(this.rank == Game.ULTRAPOOR) {
+			exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 1]);
+			exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 2]);
+		} else {
+			console.log('AI: RANKING ERROR!: ' + this.rank);
+		}
+		game.playerHasSelected(exchangeCards, this);
 	},
 	
 	/**

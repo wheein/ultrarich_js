@@ -142,15 +142,26 @@ var Player = Class.create(PlayerBase, {
 			console.log('RANKING ERROR!');
 		}
 		
+		var self = this;
 		for(var i = 0; i < this.hand.childNodes.length; i++) {
+			// Tap event
 			this.hand.childNodes[i].addEventListener(Event.TOUCH_START, function() {
+
+				// Animation
 				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5);
+				
+				// Add to array
+				exchangeCards.push(this);
 				this.clearEventListener(Event.TOUCH_START);
 				
-				exchangeCards.push(this);
+				// Exchange for other player
 				if(exchangeCards.length >= exchangeNum) {
-					game.playerHasSelected(exchangeCards);
+					game.playerHasSelected(exchangeCards, self);
+					for(var i = 0; i < self.hand.childNodes.length; i++) {
+						self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
+					}
 				}
+
 			});
 		}
 	},
