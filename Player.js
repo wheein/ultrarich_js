@@ -131,7 +131,7 @@ var Player = Class.create(PlayerBase, {
 	 * @function
 	 */
 	exchange: function() {
-		console.log('Exchange hands');
+		console.log('Player: Exchange hands');
 	},
 	
 	/**

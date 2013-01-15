@@ -207,7 +207,7 @@ var AI = Class.create(PlayerBase, {
 	 * @function
 	 */
 	exchange: function() {
-		console.log('Exchange hands');
+		console.log('AI: Exchange hands');
 	},
 	
 	/**

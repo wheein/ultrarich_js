@@ -235,9 +235,28 @@ var Game = Class.create(Core, {
 	playerHasFinished: function() {
 		console.log('Player has finished game.');
 		this.clearField();
+		
+		// set player rank
 		this.ranking.push(this.players[this.current]);
+		switch(this.ranking.length) {
+			case 1:
+				this.players[this.current].rank = Game.ULTRARICH;
+				break;
+			case 2:
+				this.players[this.current].rank = Game.RICH;
+				break;
+			case 3:
+				this.players[this.current].rank = Game.POOR;
+				break;
+		}
+		this.infoboards.childNodes[this.current].update();
+		
 		if(this.ranking.length >= this.players.length - 1) {
 			console.log('All players has finished.');
+			var worst = this.next();
+			this.ranking.push(this.players[worst])
+			this.players[worst].rank = Game.ULTRAPOOR;
+			this.infoboards.childNodes[worst].update();
 			this.stopGame();
 		} else {
 			this.current = this.next(); 

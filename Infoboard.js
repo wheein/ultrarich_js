@@ -40,6 +40,24 @@ var Infoboard = Class.create(Group, {
 	 */
 	update: function() {
 		this.handNum.text = '手札：' + this.player.hand.childNodes.length;
+		var rank = this.player.rank;
+		switch(this.player.rank) {
+			case Game.ULTRARICH:
+				this.background.image = game.assets['img/ultrarich.png'];
+				break;
+			case Game.RICH:
+				this.background.image = game.assets['img/rich.png'];
+				break;
+			case Game.COMMONER:
+				this.background.image = game.assets['img/commoner.png'];
+				break;
+			case Game.POOR:
+				this.background.image = game.assets['img/poor.png'];
+				break;
+			case Game.ULTRAPOOR:
+				this.background.image = game.assets['img/ultrapoor.png'];
+				break;
+		}
 	},
 	
 	/**
