@@ -207,21 +207,29 @@ var AI = Class.create(PlayerBase, {
 	 * @function
 	 */
 	exchange: function() {
-		console.log('AI: Exchange hands');
 		var exchangeCards = [];
-		if(this.rank == Game.ULTRARICH) {
-			exchangeCards.push(this.hand.childNodes[0]);
-			exchangeCards.push(this.hand.childNodes[1]);
-		} else if(this.rank == Game.RICH) {
-			exchangeCards.push(this.hand.firstChild);
-		} else if(this.rank == Game.POOR) {
-			exchangeCards.push(this.hand.lastChild);
-		} else if(this.rank == Game.ULTRAPOOR) {
-			exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 1]);
-			exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 2]);
-		} else {
-			console.log('AI: RANKING ERROR!: ' + this.rank);
+		switch(this.rank) {
+			case Game.ULTRARICH:
+				exchangeCards.push(this.hand.childNodes[0]);
+				exchangeCards.push(this.hand.childNodes[1]);
+				break;
+			case Game.RICH:
+				exchangeCards.push(this.hand.firstChild);
+				break;
+			case Game.POOR:
+				exchangeCards.push(this.hand.lastChild);
+				break;
+			case Game.ULTRAPOOR:
+				exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 1]);
+				exchangeCards.push(this.hand.childNodes[this.hand.childNodes.length - 2]);
+				break;
 		}
+		
+		// remove to exchange cards from hand
+		for(var i = 0; i < exchangeCards.length; i++) {
+			this.hand.removeChild(exchangeCards[i]);
+		}
+		
 		game.playerHasSelected(exchangeCards, this);
 	},
 	
@@ -236,6 +244,25 @@ var AI = Class.create(PlayerBase, {
 		for(var i = 0; i < cards.length; i++) {
 			this.hand.addChild(cards[i]);
 		}
+	},
+	
+	/**
+	 * This function executes when exchanged cards from other player.
+	 * @memberOf AI
+	 * @function
+	 * @param {Array(Card)} cards Exchanged cards
+	 */
+	cardsWereExchanged: function(cards) {
+		this.outHand();
+		for(var i = 0; i < cards.length; i++) {
+			for(var j = 0; j < this.hand.childNodes.length; j++) {
+				if(Card.compare(this.hand.childNodes[j], cards[i]) >= 0) {
+					this.hand.insertBefore(cards[i], this.hand.childNodes[j]);
+					break;
+				}
+			}
+		}
+		this.outHand();
 	}
 });
 

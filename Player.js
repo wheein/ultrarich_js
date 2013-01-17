@@ -126,42 +126,32 @@ var Player = Class.create(PlayerBase, {
 	},
 	
 	/**
-	 * Start to exchanging hands with others.
+	 * Set tap event to selecting cards that exchange to other player.
 	 * @memberOf Player
 	 * @function
 	 */
 	exchange: function() {
-		var exchangeCards = [];
-		var exchangeNum;
 		var rank = this.rank;
-		if(rank == Game.ULTRARICH || rank == Game.ULTRAPOOR) {
-			exchangeNum = 2;
-		} else if(rank == Game.RICH || rank == Game.POOR) {
-			exchangeNum = 1;
-		} else {
-			console.log('RANKING ERROR!');
-		}
-		
+		var exchangeCards = [];
+		var exchangeNum = Math.abs(rank);
 		var self = this;
+		
+		// Add tap event
 		for(var i = 0; i < this.hand.childNodes.length; i++) {
-			// Tap event
 			this.hand.childNodes[i].addEventListener(Event.TOUCH_START, function() {
-
-				// Animation
+				this.clearEventListener(Event.TOUCH_START);
+				exchangeCards.push(this);
 				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5);
 				
-				// Add to array
-				exchangeCards.push(this);
-				this.clearEventListener(Event.TOUCH_START);
-				
-				// Exchange for other player
 				if(exchangeCards.length >= exchangeNum) {
-					game.playerHasSelected(exchangeCards, self);
 					for(var i = 0; i < self.hand.childNodes.length; i++) {
 						self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
 					}
+					for(var i = 0; i < exchangeCards.length; i++) {
+						self.hand.removeChild(exchangeCards[i]);
+					}
+					game.playerHasSelected(exchangeCards, self);
 				}
-
 			});
 		}
 	},
@@ -180,6 +170,25 @@ var Player = Class.create(PlayerBase, {
 			cards[i].visible = true;
 			this.hand.addChild(cards[i]);
 		}
+	},
+	
+	/**
+	 * When exchanging cards
+	 * @memberOf Player
+	 * @function
+	 * @param {Array(Card)} cards Exchanged cards from other player.
+	 */
+	cardsWereExchanged: function(cards) {
+		this.outHand();
+		for(var i = 0; i < cards.length; i++) {
+			for(var j = 0; j < this.hand.childNodes.length; j++) {
+				if(Card.compare(this.hand.childNodes[j], cards[i]) >= 0) {
+					this.hand.insertBefore(cards[i], this.hand.childNodes[j]);
+					break;
+				}
+			}
+		}
+		this.outHand();
 	}
 });
 

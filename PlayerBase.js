@@ -88,5 +88,18 @@ var PlayerBase = Class.create({
 			}
 		}
 		return cards;
+	},
+	
+	/**
+	 * for debug.
+	 * @memberOf PlayerBase
+	 * @function
+	 */
+	outHand: function() {
+		var numbers = [];
+		for(var i = 0; i < this.hand.childNodes.length; i++) {
+			numbers.push(this.hand.childNodes[i].number);
+		}
+		console.log(this.id, numbers);
 	}
 });

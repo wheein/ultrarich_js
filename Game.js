@@ -3,6 +3,7 @@
  * @class Game
  * @extends Core
  */
+
 var Game = Class.create(Core, {
 	/**
 	 * All players list.
@@ -21,9 +22,9 @@ var Game = Class.create(Core, {
 	/**
 	 * Buffer of cards to exchange.
 	 * @memberOf Game
-	 * @property {Array(Array(Card))} exchangeBuffer
+	 * @property {Object} exchangeBuffer
 	 */
-	exchangeBuffer: [],
+	exchangeBuffer: null,
 	
 	/**
 	 * Cardset that will used on the game.
@@ -180,7 +181,7 @@ var Game = Class.create(Core, {
 		// debug end //
 		
 		if(this.gameCount > 1) {
-			this.exchangeBuffer = [];
+			this.exchangeBuffer = {};
 			for(var i = 0; i < this.players.length; i++) {
 				this.players[i].exchange();
 			}
@@ -364,22 +365,24 @@ var Game = Class.create(Core, {
 	 * @param {Player} Owner of cards.
 	 */
 	playerHasSelected: function(cards, owner) {
-		this.exchangeBuffer.push({
-			rank :owner.rank,
-			cards: cards
-		});
-		console.log(this.exchangeBuffer);
-		
+		this.exchangeBuffer[owner.rank] = cards;
+		if(Object.keys(this.exchangeBuffer).length >= this.players.length) {
+			for(var i = 0; i < this.players.length; i++) {
+				var player = this.players[i];
+				player.cardsWereExchanged(this.exchangeBuffer[-player.rank]);
+			}
+		}
 	}
 });
 
 /**
- * Const of ranking
+ * Const of ranking. 階級にマイナス符号をつけると反対の階級になる。
  * @static
  * @memberOf Game
+ * @example -(Game.RICH) == Game.POOR
  */
-Game.ULTRARICH = 5;
-Game.RICH = 4;
-Game.COMMONER = 3;
-Game.POOR = 2;
-Game.ULTRAPOOR = 1;
+Game.ULTRARICH =  2;
+Game.RICH      =  1;
+Game.COMMONER  =  0;
+Game.POOR      = -1;
+Game.ULTRAPOOR = -2;
