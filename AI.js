@@ -16,7 +16,7 @@ var AI = Class.create(PlayerBase, {
 		var that = this;
 		setTimeout(function() {
 			strategy.call(that);
-		}, 250);
+		}, 500);
 	},
 	
 	/**
@@ -190,7 +190,7 @@ var AI = Class.create(PlayerBase, {
 			game.rootScene.addChild(cards[i]);
 			cards[i].y = 60 * this.id;
 			cards[i].visible = true;
-			cards[i].tl.moveTo(game.field.x, game.field.y, 4).then(function() {
+			cards[i].tl.moveTo(game.field.x, game.field.y, 4).delay(10).then(function() {
 				game.rootScene.removeChild(this);
 				
 				endAnimeCount++;
@@ -253,7 +253,6 @@ var AI = Class.create(PlayerBase, {
 	 * @param {Array(Card)} cards Exchanged cards
 	 */
 	cardsWereExchanged: function(cards) {
-		this.outHand();
 		for(var i = 0; i < cards.length; i++) {
 			for(var j = 0; j < this.hand.childNodes.length; j++) {
 				if(Card.compare(this.hand.childNodes[j], cards[i]) >= 0) {
@@ -262,7 +261,6 @@ var AI = Class.create(PlayerBase, {
 				}
 			}
 		}
-		this.outHand();
 	}
 });
 

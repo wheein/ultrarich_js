@@ -136,22 +136,24 @@ var Player = Class.create(PlayerBase, {
 		var exchangeNum = Math.abs(rank);
 		var self = this;
 		
+		alert('交換するカードを選択してください');
+		
 		// Add tap event
 		for(var i = 0; i < this.hand.childNodes.length; i++) {
 			this.hand.childNodes[i].addEventListener(Event.TOUCH_START, function() {
 				this.clearEventListener(Event.TOUCH_START);
 				exchangeCards.push(this);
-				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5);
-				
-				if(exchangeCards.length >= exchangeNum) {
-					for(var i = 0; i < self.hand.childNodes.length; i++) {
-						self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
+				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5).delay(20).then(function() {
+					if(exchangeCards.length >= exchangeNum) {
+						for(var i = 0; i < self.hand.childNodes.length; i++) {
+							self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
+						}
+						for(var i = 0; i < exchangeCards.length; i++) {
+							self.hand.removeChild(exchangeCards[i]);
+						}
+						game.playerHasSelected(exchangeCards, self);
 					}
-					for(var i = 0; i < exchangeCards.length; i++) {
-						self.hand.removeChild(exchangeCards[i]);
-					}
-					game.playerHasSelected(exchangeCards, self);
-				}
+				});
 			});
 		}
 	},
@@ -179,16 +181,23 @@ var Player = Class.create(PlayerBase, {
 	 * @param {Array(Card)} cards Exchanged cards from other player.
 	 */
 	cardsWereExchanged: function(cards) {
-		this.outHand();
 		for(var i = 0; i < cards.length; i++) {
 			for(var j = 0; j < this.hand.childNodes.length; j++) {
 				if(Card.compare(this.hand.childNodes[j], cards[i]) >= 0) {
+					cards[i].visible = true;
 					this.hand.insertBefore(cards[i], this.hand.childNodes[j]);
 					break;
 				}
 			}
 		}
-		this.outHand();
+		
+		// redraw hands
+		for(var i = 0; i < this.hand.childNodes.length; i++) {
+			var cards = this.hand.childNodes;
+			cards[i].x = 10 + (i % 7) * 110;
+			cards[i].y = 330 + Math.floor(i / 7) * 150;
+		}
+		
 	}
 });
 

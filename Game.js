@@ -173,11 +173,11 @@ var Game = Class.create(Core, {
 		
 		// Exchange players hand after 2nd game.
 		// debug start //
-		this.gameCount = 2;
-		this.players[0].rank = Game.ULTRARICH;
-		this.players[1].rank = Game.RICH;
-		this.players[2].rank = Game.POOR;
-		this.players[3].rank = Game.ULTRAPOOR;
+//		this.gameCount = 2;
+//		this.players[0].rank = Game.ULTRARICH;
+//		this.players[1].rank = Game.RICH;
+//		this.players[2].rank = Game.POOR;
+//		this.players[3].rank = Game.ULTRAPOOR;
 		// debug end //
 		
 		if(this.gameCount > 1) {
@@ -268,6 +268,8 @@ var Game = Class.create(Core, {
 		}
 		this.infoboards.childNodes[this.current].update();
 		
+		console.log('RANKING:' + this.ranking.length);
+		
 		if(this.ranking.length >= this.players.length - 1) {
 			console.log('All players has finished.');
 			var worst = this.next();
@@ -349,12 +351,15 @@ var Game = Class.create(Core, {
 	 */
 	stopGame: function() {
 		console.log('Game has stopped.');
-		if(window.confirm(this.gameCount + '回戦が終了しました。次の試合をやりますか？')) {
-			this.startGame();
-		} else {
-			console.log('Game has finished');
-			this.stop();
-		}
+		var self = this;
+		setTimeout(function() {
+			if(window.confirm(self.gameCount + '回戦が終了しました。次の試合をやりますか？')) {
+				self.startGame();
+			} else {
+				console.log('Game has finished');
+				self.stop();
+			}
+		}, 500);
 	},
 	
 	/**
@@ -371,6 +376,10 @@ var Game = Class.create(Core, {
 				var player = this.players[i];
 				player.cardsWereExchanged(this.exchangeBuffer[-player.rank]);
 			}
+			this.ranking = [];
+			this.current = 0;
+			this.marker.moveTo(0);
+			this.players[0].startTurn();
 		}
 	}
 });
