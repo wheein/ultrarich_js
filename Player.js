@@ -143,17 +143,20 @@ var Player = Class.create(PlayerBase, {
 			this.hand.childNodes[i].addEventListener(Event.TOUCH_START, function() {
 				this.clearEventListener(Event.TOUCH_START);
 				exchangeCards.push(this);
-				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5).delay(20).then(function() {
-					if(exchangeCards.length >= exchangeNum) {
-						for(var i = 0; i < self.hand.childNodes.length; i++) {
-							self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
+				this.tl.moveTo(game.field.x + exchangeCards.length * 110, game.field.y, 5)
+					.delay(20)
+					.then(function() {
+						if(exchangeCards.length >= exchangeNum) {
+							for(var i = 0; i < self.hand.childNodes.length; i++) {
+								self.hand.childNodes[i].clearEventListener(Event.TOUCH_START);
+							}
+							
+							for(var i = 0; i < exchangeCards.length; i++) {
+								self.hand.removeChild(exchangeCards[i]);
+							}
+							game.playerHasSelected(exchangeCards, self);
 						}
-						for(var i = 0; i < exchangeCards.length; i++) {
-							self.hand.removeChild(exchangeCards[i]);
-						}
-						game.playerHasSelected(exchangeCards, self);
-					}
-				});
+					});
 			});
 		}
 	},

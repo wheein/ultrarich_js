@@ -173,11 +173,11 @@ var Game = Class.create(Core, {
 		
 		// Exchange players hand after 2nd game.
 		// debug start //
-//		this.gameCount = 2;
-//		this.players[0].rank = Game.ULTRARICH;
-//		this.players[1].rank = Game.RICH;
-//		this.players[2].rank = Game.POOR;
-//		this.players[3].rank = Game.ULTRAPOOR;
+		this.gameCount = 2;
+		this.players[0].rank = Game.ULTRARICH;
+		this.players[1].rank = Game.RICH;
+		this.players[2].rank = Game.POOR;
+		this.players[3].rank = Game.ULTRAPOOR;
 		// debug end //
 		
 		if(this.gameCount > 1) {

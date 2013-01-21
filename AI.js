@@ -188,6 +188,7 @@ var AI = Class.create(PlayerBase, {
 		var endAnimeCount = 0;
 		for(var i = 0; i < cards.length; i++) {
 			game.rootScene.addChild(cards[i]);
+			cards[i].x = 80;
 			cards[i].y = 60 * this.id;
 			cards[i].visible = true;
 			cards[i].tl.moveTo(game.field.x, game.field.y, 4).delay(10).then(function() {
